@@ -1,7 +1,7 @@
 import os, sys, time
 from tkinter import Tk, Button, Label, Entry, OptionMenu, StringVar
 import ctypes
-from updater import check_for_updates
+from updater import check_for_updates, has_internet_connection
 
 try:
     import pyautogui
@@ -74,7 +74,8 @@ def start_app():
         time.sleep(duration)
         pag.mouseUp(button=final_mouse_button)
 
-check_for_updates()
+if has_internet_connection():
+    check_for_updates()
 
 string_var = StringVar()
 

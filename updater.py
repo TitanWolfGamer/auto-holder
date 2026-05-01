@@ -2,6 +2,13 @@ import requests
 import base64
 import os
 
+def has_internet_connection() -> bool:
+    try:
+        res = requests.get("http://www.google.com")
+        return res.status_code == 200
+    except:
+        return False
+
 def check_for_updates() -> None:
     print('Checking for Updates...')
 
