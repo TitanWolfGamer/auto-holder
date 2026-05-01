@@ -27,6 +27,8 @@ root = Tk()
 MOUSE_BTN: str = ''
 SM_SWAPBUTTON = 23
 
+def check_for_updates() -> None:
+    os.system('cmd -c py ./updater.py')
 
 def swapped_primary_button() -> bool:
     user32 = ctypes.WinDLL("user32", use_last_error=True)
@@ -74,6 +76,7 @@ def start_app():
         time.sleep(duration)
         pag.mouseUp(button=final_mouse_button)
 
+check_for_updates()
 
 string_var = StringVar()
 

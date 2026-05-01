@@ -3,28 +3,24 @@ from time import time
 from tkinter.filedialog import askdirectory
 import json
 
-TEMP_FILENAME: str = f'AutoHolder-{time()}'
+class Program:
+    def __init__(self) -> None:
+        self.__inst_dir: str = askdirectory(title='Select Folder for installation')
+        self.__config: dict = {'path': fr'{self.__inst_dir}/AutoHolder'}
 
-def get_installation_directory() -> str:
-    return askdirectory(title='Select Folder for installation')
+    def install(self, temp_filename: str = f'AutoHolder-{time()}') -> None:
+        temp_dir: str = os.environ['TEMP']
+        temp_path: str = rf'{temp_dir}\{temp_filename}'
 
-def set_up_config(installation_directory: str) -> dict:
-    return {'path': installation_directory}
+        os.system(f'git clone https://github.com/TitanWolfGamer/auto-holder.git {temp_path}')
+        os.remove(fr'{temp_path}\installer.py')
+        os.remove(fr'{temp_path}\.gitignore')
 
+        # setting up config
+        with open(fr'{temp_path}\config.json', 'w') as f:
+            json.dump(self.__config, f)
 
-def install_program(installation_directory: str, temp_filename: str) -> None:
-    temp_dir: str = os.environ['TEMP']
-    temp_path: str = rf'{temp_dir}\{temp_filename}'
+        os.rename(temp_path, fr'{self.__inst_dir}\AutoHolder')
 
-    config_content: dict = set_up_config(installation_directory)
-
-    os.system(f'git clone https://github.com/TitanWolfGamer/auto-holder.git {temp_path}')
-    os.remove(fr'{temp_path}\installer.py')
-    os.remove(fr'{temp_path}\.gitignore')
-
-    # overwriting default config data
-    with open(fr'{temp_path}\config.json', 'w') as f:
-        json.dump(config_content, f)
-
-
-install_program(get_installation_directory(), TEMP_FILENAME)
+program: Program = Program()
+program.install()
