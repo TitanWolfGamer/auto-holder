@@ -1,5 +1,6 @@
 import requests
 import base64
+import os
 
 def check_for_updates() -> None:
     print('Checking for Updates...')
@@ -9,7 +10,7 @@ def check_for_updates() -> None:
     newest_update_data: dict = requests.get(url).json()
     newest_update: str = base64.b64decode(newest_update_data['content']).decode('utf-8')
 
-    with open('./holder.py', 'r') as f:
+    with open(f'{os.getcwd()}/holder.py', 'r') as f:
         current_version: str = f.read()
 
     has_newest_update: bool = newest_update == current_version
@@ -18,7 +19,7 @@ def check_for_updates() -> None:
         print('Update found.')
         print('Installing Update...')
 
-        with open('./holder.py', 'w') as f:
+        with open(f'{os.getcwd()}/holder.py', 'w') as f:
             f.write(newest_update)
 
         print('Update installed.')
